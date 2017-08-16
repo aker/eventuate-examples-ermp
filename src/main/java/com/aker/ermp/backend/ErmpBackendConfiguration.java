@@ -35,4 +35,14 @@ public class ErmpBackendConfiguration {
 	public RoleService updateService(AggregateRepository<RoleAggregate, RoleCommand> aggregateRepository) {
 		return new RoleService(aggregateRepository);
 	}
+	
+	@Bean
+	public RoleQueryService queryService(RoleRepository repository) {
+		return new RoleQueryService(repository);
+	}
+	
+	@Bean
+	public RoleQueryWorkflow roleQueryWorkflow(RoleQueryService queryService) {
+		return new RoleQueryWorkflow(queryService);
+	}
 }
