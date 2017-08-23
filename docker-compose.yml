@@ -17,7 +17,7 @@ kafka:
     - ZOOKEEPER_SERVERS=zookeeper:2181
 
 mysql:
-  build: ./mysql
+  image: eventuateio/eventuateio-local-mysql:0.10.0
   ports:
     - 3306:3306
   environment:
@@ -57,18 +57,45 @@ consoleserver:
     EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
     DEBUG: kafka-node:*
 
-standaloneservice:
-  extends:
-    file: docker-compose-common.yml
-    service: standaloneservice
-  volumes:
-    - ./build/libs:/app
+commandsideservice:
+  build: ./ermp-service/
+  restart: unless-stopped
+  ports:
+    - "8081:8080"
   links:
     - mysql
     - kafka
     - zookeeper
   environment:
     SPRING_DATASOURCE_URL: jdbc:mysql://mysql/eventuate
+    SPRING_DATASOURCE_USERNAME: mysqluser
+    SPRING_DATASOURCE_PASSWORD: mysqlpw
+    SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
+    EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING: zookeeper:2181
+    EVENTUATELOCAL_CDC_DB_USER_NAME: root
+    EVENTUATELOCAL_CDC_DB_PASSWORD: rootpassword
+
+ermpdb:
+  build: ./mysql
+  ports:
+    - 4306:3306
+  environment:
+    - MYSQL_ROOT_PASSWORD=rootpassword
+    - MYSQL_USER=mysqluser
+    - MYSQL_PASSWORD=mysqlpw
+
+querysideservice:
+  build: ./ermp-view-service/
+  restart: unless-stopped
+  ports:
+    - "8082:8080"
+  links:
+    - ermpdb
+    - kafka
+    - zookeeper
+  environment:
+    SPRING_DATASOURCE_URL: jdbc:mysql://ermpdb/ermp
     SPRING_DATASOURCE_USERNAME: mysqluser
     SPRING_DATASOURCE_PASSWORD: mysqlpw
     SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.jdbc.Driver
