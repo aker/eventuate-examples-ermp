@@ -18,6 +18,5 @@
 
     <logger name="io.eventuate.activity" level='debug'>
     </logger>
-
-
+    
 </configuration>

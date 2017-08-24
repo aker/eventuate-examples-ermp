@@ -1,4 +1,4 @@
-package com.aker.ermp.queryside.backend;
+package com.aker.ermp.queryside.backend.domain;
 
 import com.aker.ermp.common.event.RoleCreatedEvent;
 import com.aker.ermp.model.Role;
@@ -7,20 +7,20 @@ import io.eventuate.DispatchedEvent;
 import io.eventuate.EventHandlerMethod;
 import io.eventuate.EventSubscriber;
 
-@EventSubscriber(id = "roleQuerySideEventHandlers")
+@EventSubscriber(id = "ermpViewEventHandlers")
 public class ErmpViewEventSubscriber {
 	
-	private RoleQueryService roleQueryService;
+	private RoleViewServiceImpl roleViewService;
 	
-	public ErmpViewEventSubscriber(RoleQueryService roleQueryService) {
-		this.roleQueryService = roleQueryService;
+	public ErmpViewEventSubscriber(RoleViewServiceImpl roleViewService) {
+		this.roleViewService = roleViewService;
 	}
 	
 	@EventHandlerMethod
 	public void create(DispatchedEvent<RoleCreatedEvent> de) {
-		Role role = new Role(de.getEvent().getRole());
+		Role role = new Role(de.getEvent().getRoleInfo());
 		role.setId(de.getEntityId());
 		
-		roleQueryService.save(role);
+		roleViewService.save(role);
 	}
 }

@@ -4,14 +4,14 @@ import com.aker.ermp.model.RoleInfo;
 
 public class CreateRoleCommand implements RoleCommand {
 	
-	private RoleInfo role;
+	private RoleInfo roleInfo;
 	
-	public CreateRoleCommand(RoleInfo role) {
-		this.role = role;
+	public CreateRoleCommand(RoleInfo roleInfo) {
+		this.roleInfo = roleInfo;
 	}
 	
-	public RoleInfo getRole() {
-		return role;
+	public RoleInfo getRoleInfo() {
+		return roleInfo;
 	}
 
 }

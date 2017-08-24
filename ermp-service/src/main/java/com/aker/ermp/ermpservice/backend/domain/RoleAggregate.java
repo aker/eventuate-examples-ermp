@@ -14,7 +14,7 @@ import io.eventuate.ReflectiveMutableCommandProcessingAggregate;
 
 public class RoleAggregate extends ReflectiveMutableCommandProcessingAggregate<RoleAggregate, RoleCommand> {
 	
-	private RoleInfo role;
+	private RoleInfo roleInfo;
 	private boolean deleted;
 	
 	public List<Event> process(CreateRoleCommand cmd) {
@@ -22,14 +22,14 @@ public class RoleAggregate extends ReflectiveMutableCommandProcessingAggregate<R
 			return Collections.emptyList();
 		}
 		
-		return EventUtil.events(new RoleCreatedEvent(cmd.getRole()));
+		return EventUtil.events(new RoleCreatedEvent(cmd.getRoleInfo()));
 	}
 	
 	public void apply(RoleCreatedEvent event) {
-		this.role = event.getRole();
+		this.roleInfo = event.getRoleInfo();
 	}
 	
-	public RoleInfo getRole() {
-		return role;
+	public RoleInfo getRoleInfo() {
+		return roleInfo;
 	}
 }

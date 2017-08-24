@@ -25,13 +25,13 @@ public class RoleController extends BaseController {
 	private RoleService roleService;
 	
 	@RequestMapping(method = POST)
-	public CompletableFuture<ResourceWithUrl> saveRole(@RequestBody RoleInfo role, HttpServletRequest request) {
-		Assert.notNull(role.getName());
-		return roleService.save(role).thenApply(e -> withRequestAttributeContext(request, () -> toResource(e.getAggregate().getRole(), e.getEntityId())));
+	public CompletableFuture<ResourceWithUrl> saveRole(@RequestBody RoleInfo roleInfo, HttpServletRequest request) {
+		Assert.notNull(roleInfo.getName());
+		return roleService.save(roleInfo).thenApply(e -> withRequestAttributeContext(request, () -> toResource(e.getAggregate().getRoleInfo(), e.getEntityId())));
 	}
 	
-	protected ResourceWithUrl toResource(RoleInfo role, String id) {
-		ResourceWithUrl<RoleInfo> result = new ResourceWithUrl<>(role);
+	protected ResourceWithUrl toResource(RoleInfo roleInfo, String id) {
+		ResourceWithUrl<RoleInfo> result = new ResourceWithUrl<>(roleInfo);
 		result.setId(id);
 		
 		return result;

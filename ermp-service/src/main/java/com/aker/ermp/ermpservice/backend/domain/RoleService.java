@@ -17,7 +17,7 @@ public class RoleService {
 		this.aggregateRepository = roleRepository;
 	}
 	
-	public CompletableFuture<EntityWithIdAndVersion<RoleAggregate>> save(RoleInfo role) {
-		return aggregateRepository.save(new CreateRoleCommand(role));
+	public CompletableFuture<EntityWithIdAndVersion<RoleAggregate>> save(RoleInfo roleInfo) {
+		return aggregateRepository.save(new CreateRoleCommand(roleInfo));
 	}
 }

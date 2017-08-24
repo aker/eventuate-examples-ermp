@@ -4,22 +4,22 @@ import com.aker.ermp.model.RoleInfo;
 
 public class RoleCreatedEvent implements RoleEvent {
 	
-	RoleInfo role;
+	RoleInfo roleInfo;
 	
 	private RoleCreatedEvent() {
 		
 	}
 	
-	public RoleCreatedEvent(RoleInfo role) {
-		this.role = role;
+	public RoleCreatedEvent(RoleInfo roleInfo) {
+		this.roleInfo = roleInfo;
 	}
 	
-	public RoleInfo getRole() {
-		return this.role;
+	public RoleInfo getRoleInfo() {
+		return this.roleInfo;
 	}
 	
-	public void setRole(RoleInfo role) {
-		this.role = role;
+	public void setRoleInfo(RoleInfo role) {
+		this.roleInfo = role;
 	}
 
 }
