@@ -1,23 +1,23 @@
 package com.aker.ermp.ermpservice.web;
 
-import org.springframework.boot.context.embedded.ServletListenerRegistrationBean;
+import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import com.aker.ermp.ermpservice.backend.ErmpBackendConfiguration;
 
 @Configuration
-@Import({ErmpBackendConfiguration.class})
-@ComponentScan({"com.aker.ermp.common",
-				"com.aker.ermp.ermpservice.web"})
-public class ErmpWebConfiguration extends WebMvcConfigurerAdapter {
+@ComponentScan
+@Import(ErmpBackendConfiguration.class)
+public class ErmpWebConfiguration {
 
 	@Bean
-	public ServletListenerRegistrationBean<RequestContextListener> httpRequestContextListener() {
-		return new ServletListenerRegistrationBean<RequestContextListener>(new RequestContextListener());
-	}
+    public HttpMessageConverters customConverters() {
+        HttpMessageConverter<?> additional = new MappingJackson2HttpMessageConverter();
+        return new HttpMessageConverters(additional);
+    }
 }

@@ -1,25 +1,34 @@
 package com.aker.ermp.common.event;
 
-import com.aker.ermp.model.RoleInfo;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class RoleCreatedEvent implements RoleEvent {
 	
-	RoleInfo roleInfo;
-	
+	private String name;
+
 	private RoleCreatedEvent() {
-		
 	}
 	
-	public RoleCreatedEvent(RoleInfo roleInfo) {
-		this.roleInfo = roleInfo;
+	public RoleCreatedEvent(String name) {
+		this.name = name;
 	}
 	
-	public RoleInfo getRoleInfo() {
-		return this.roleInfo;
-	}
-	
-	public void setRoleInfo(RoleInfo role) {
-		this.roleInfo = role;
+	public String getName() {
+		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    return EqualsBuilder.reflectionEquals(this, obj);
+	}
+
+	@Override
+	public int hashCode() {
+	    return HashCodeBuilder.reflectionHashCode(this);
+	}
 }

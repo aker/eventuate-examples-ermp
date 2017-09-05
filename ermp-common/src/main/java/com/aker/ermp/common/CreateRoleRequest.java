@@ -1,10 +1,13 @@
-package com.aker.ermp.ermpservice.backend.command;
+package com.aker.ermp.common;
 
-public class CreateRoleCommand implements RoleCommand {
-	
+public class CreateRoleRequest {
 	private String name;
 	
-	public CreateRoleCommand(String name) {
+	public CreateRoleRequest() {
+		
+	}
+	
+	public CreateRoleRequest(String name) {
 		this.name = name;
 	}
 	

@@ -4,8 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.aker.ermp.model.RoleInfo;
-
 @Entity
 public class Role {
 
@@ -17,10 +15,6 @@ public class Role {
     private Boolean deleted;
 
     public Role() {
-    }
-
-    public Role(RoleInfo roleInfo) {
-        this.name = roleInfo.getName();
     }
 
     public Role(String name) {
