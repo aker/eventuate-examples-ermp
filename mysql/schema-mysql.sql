@@ -1,4 +1,7 @@
-USE eventuate;
+create database ermp;
+GRANT ALL PRIVILEGES ON ermp.* TO 'mysqluser'@'%' WITH GRANT OPTION;
+
+USE ermp;
 
 DROP table IF EXISTS  role;
 
