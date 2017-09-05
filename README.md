@@ -23,7 +23,8 @@ See this [guide to setting `DOCKER_HOST_IP`](http://eventuate.io/docs/usingdocke
 
 Once the application has started, you can use the application via the Swagger UI.
 
-* `http://${DOCKER_HOST_IP}:8080/swagger-ui.html` - the monolithic application
+* `http://${DOCKER_HOST_IP}:8081/swagger-ui.html`
+* `http://${DOCKER_HOST_IP}:8082/swagger-ui.html`
 
 # Using the Eventuate Local console
 
