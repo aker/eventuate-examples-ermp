@@ -1,0 +1,129 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: eventuate-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eventuate
+    spec:
+      containers:
+      - name: zookeeper
+        image: eventuateio/eventuateio-local-zookeeper:0.12.1
+        ports:
+          - containerPort: 2181
+          - containerPort: 2888
+          - containerPort: 3888
+    
+      - name: mysql
+        image: eventuateio/eventuateio-local-mysql:0.10.0
+        ports:
+          - containerPort: 3306
+        env:
+          - name: MYSQL_PASSWORD
+            value: mysqlpw
+          - name: MYSQL_ROOT_PASSWORD
+            value: rootpassword
+          - name: MYSQL_USER
+            value: mysqluser
+    
+      - name: kafka
+        image: eventuateio/eventuateio-local-kafka:0.12.1
+        ports:
+          - containerPort: 9092
+        env:
+          - name: ADVERTISED_HOST_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: KAFKA_HEAP_OPTS
+            value: -Xmx320m -Xms320m
+          - name: ZOOKEEPER_SERVERS
+            value: localhost:2181
+    
+      - name: cdcservice
+        image: eventuateio/eventuateio-local-cdc-service:0.12.1
+        ports:
+          - containerPort: 8080
+        env:
+          - name: EVENTUATELOCAL_CDC_DB_PASSWORD
+            value: rootpassword
+          - name: EVENTUATELOCAL_CDC_DB_USER_NAME
+            value: root
+          - name: EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS
+            value: localhost:9092
+          - name: EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING
+            value: localhost:2181
+          - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+            value: com.mysql.jdbc.Driver
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: mysqlpw
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:mysql://localhost/eventuate
+          - name: SPRING_DATASOURCE_USERNAME
+            value: mysqluser
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: eventuate-service
+spec:
+  selector:
+    app: eventuate
+  ports:
+  - name: zookeeper
+    protocol: TCP
+    port: 2181
+    targetPort: 2181
+  - name: kafka
+    protocol: TCP
+    port: 9092
+    targetPort: 9092
+  - name: mysql
+    protocol: TCP
+    port: 3306
+    targetPort: 3306
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: eventuate-console
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eventuate-console
+    spec:
+      containers:
+      - name: consoleserver
+        image: eventuateio/eventuateio-local-console:0.12.1
+        ports:
+          - containerPort: 8080
+        env:
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:mysql://eventuate-service/eventuate
+          - name: SPRING_DATASOURCE_USERNAME
+            value: mysqluser
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: mysqlpw
+          - name: EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING
+            value: eventuate-service:2181
+          - name: DEBUG
+            value: kafka-node:*
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: eventuate-console
+spec:
+  type: NodePort
+  selector:
+    app: eventuate-console
+  ports:
+  - name: consoleserver
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
