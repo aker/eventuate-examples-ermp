@@ -1,13 +1,13 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: ermp-query
+  name: ermp-db
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: ermp-query
+        app: ermp-db
     spec:
        containers:
        - name: ermpdb
@@ -21,13 +21,39 @@ spec:
              value: mysqluser
            - name: MYSQL_PASSWORD
              value: mysqlpw
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ermp-db
+spec:
+  selector:
+    app: ermp-db
+  ports:
+    - name: ermp-db
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: ermp
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ermp
+    spec:
+       containers:
        - name: queryside
          image: aker/ermp_querysideservice
          ports:
            - containerPort: 8080
          env:
            - name: SPRING_DATASOURCE_URL
-             value: jdbc:mysql://localhost/ermp
+             value: jdbc:mysql://ermp-db/ermp
            - name: SPRING_DATASOURCE_USERNAME
              value: mysqluser
            - name: SPRING_DATASOURCE_PASSWORD
@@ -37,43 +63,16 @@ spec:
            - name: EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS
              value: eventuate-service:9092
            - name: EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING
-             value: eventuate-service:2181
+             value: zookeeper:2181
            - name: EVENTUATELOCAL_CDC_DB_USER_NAME
              value: root
            - name: EVENTUATELOCAL_CDC_DB_PASSWORD
              value: rootpassword
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: ermp-queryservice
-spec:
-  type: NodePort
-  selector:
-    app: ermp-query
-  ports:
-    - name: ermp-query
-      protocol: TCP
-      port: 8080
-      targetPort: 8080
-      nodePort: 30082
----
-apiVersion: apps/v1beta1
-kind: Deployment
-metadata:
-  name: ermp-command
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ermp-command
-    spec:
-       containers:
+
        - name: commandside
          image: aker/ermp_commandsideservice
          ports:
-           - containerPort: 8080
+           - containerPort: 8081
          env:
            - name: SPRING_DATASOURCE_URL
              value: jdbc:mysql://eventuate-service/eventuate
@@ -86,24 +85,31 @@ spec:
            - name: EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS
              value: eventuate-service:9092
            - name: EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING
-             value: eventuate-service:2181
+             value: zookeeper:2181
            - name: EVENTUATELOCAL_CDC_DB_USER_NAME
              value: root
            - name: EVENTUATELOCAL_CDC_DB_PASSWORD
              value: rootpassword
+           - name: SERVER_PORT
+             value: "8081"
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: ermp-commandservice
+  name: ermp
 spec:
   type: NodePort
   selector:
-    app: ermp-command
+    app: ermp
   ports:
-    - name: ermp-command
+    - name: ermp-query
       protocol: TCP
       port: 8080
       targetPort: 8080
+      nodePort: 30082
+    - name: ermp-command
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
       nodePort: 30081
 
