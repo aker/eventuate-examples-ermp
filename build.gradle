@@ -9,13 +9,8 @@ buildscript {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
-}
-
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'eclipse'
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
