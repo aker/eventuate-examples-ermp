@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         maven {
-            url 'http://10.169.1.236:8081/content/groups/public/'
+            url "http://10.169.1.236:8081/content/groups/public/"
         }
     }
     dependencies {
@@ -10,13 +10,13 @@ buildscript {
 }
 
 subprojects {
-    apply plugin: 'java'
+    apply plugin: "java"
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
     repositories {
         maven {
-            url 'http://10.169.1.236:8081/content/groups/public/'
+            url "http://10.169.1.236:8081/content/groups/public/"
         }
     }
 }

@@ -1,7 +1,7 @@
-include 'ermp-common'
-include 'ermp-common-swagger'
-include 'ermp-service'
-include 'ermp-view-service'
+include "ermp-common"
+include "ermp-common-swagger"
+include "ermp-service"
+include "ermp-view-service"
 
-rootProject.name = 'eventuate-examples-ermp'
+rootProject.name = "eventuate-examples-ermp"
 
