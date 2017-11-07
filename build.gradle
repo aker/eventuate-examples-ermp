@@ -1,14 +1,3 @@
-buildscript {
-    repositories {
-        maven {
-            url "$mavenRepoUrl"
-        }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
-    }
-}
-
 subprojects {
     apply plugin: "java"
     sourceCompatibility = 1.8
