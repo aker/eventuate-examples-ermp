@@ -47,28 +47,6 @@ spec:
         app: ermp
     spec:
        containers:
-       - name: queryside
-         image: aker/ermp_querysideservice
-         ports:
-           - containerPort: 8080
-         env:
-           - name: SPRING_DATASOURCE_URL
-             value: jdbc:mysql://ermp-db/ermp
-           - name: SPRING_DATASOURCE_USERNAME
-             value: mysqluser
-           - name: SPRING_DATASOURCE_PASSWORD
-             value: mysqlpw
-           - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
-             value: com.mysql.jdbc.Driver
-           - name: EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS
-             value: eventuate-service:9092
-           - name: EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING
-             value: zookeeper:2181
-           - name: EVENTUATELOCAL_CDC_DB_USER_NAME
-             value: root
-           - name: EVENTUATELOCAL_CDC_DB_PASSWORD
-             value: rootpassword
-
        - name: commandside
          image: aker/ermp_commandsideservice
          ports:
@@ -90,8 +68,28 @@ spec:
              value: root
            - name: EVENTUATELOCAL_CDC_DB_PASSWORD
              value: rootpassword
-           - name: SERVER_PORT
-             value: "8081"
+       
+       - name: queryside
+         image: aker/ermp_querysideservice
+         ports:
+           - containerPort: 8082
+         env:
+           - name: SPRING_DATASOURCE_URL
+             value: jdbc:mysql://ermp-db/ermp
+           - name: SPRING_DATASOURCE_USERNAME
+             value: mysqluser
+           - name: SPRING_DATASOURCE_PASSWORD
+             value: mysqlpw
+           - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+             value: com.mysql.jdbc.Driver
+           - name: EVENTUATELOCAL_KAFKA_BOOTSTRAP_SERVERS
+             value: eventuate-service:9092
+           - name: EVENTUATELOCAL_ZOOKEEPER_CONNECTION_STRING
+             value: zookeeper:2181
+           - name: EVENTUATELOCAL_CDC_DB_USER_NAME
+             value: root
+           - name: EVENTUATELOCAL_CDC_DB_PASSWORD
+             value: rootpassword
 ---
 kind: Service
 apiVersion: v1
@@ -102,14 +100,13 @@ spec:
   selector:
     app: ermp
   ports:
-    - name: ermp-query
-      protocol: TCP
-      port: 8080
-      targetPort: 8080
-      nodePort: 30082
     - name: ermp-command
       protocol: TCP
       port: 8081
       targetPort: 8081
       nodePort: 30081
-
+    - name: ermp-query
+      protocol: TCP
+      port: 8082
+      targetPort: 8082
+      nodePort: 30082
