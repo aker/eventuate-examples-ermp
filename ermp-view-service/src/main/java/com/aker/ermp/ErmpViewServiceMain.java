@@ -1,15 +1,14 @@
-package com.aker.ermp.queryside;
+package com.aker.ermp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 import com.aker.ermp.commonswagger.CommonSwaggerConfiguration;
+import com.aker.ermp.ermpservice.web.ErmpWebConfiguration;
 import com.aker.ermp.queryside.web.ErmpViewWebConfiguration;
 
-import io.eventuate.javaclient.driver.EventuateDriverConfiguration;
-
-@Import({ErmpViewWebConfiguration.class, EventuateDriverConfiguration.class, CommonSwaggerConfiguration.class})
+@Import({ErmpWebConfiguration.class, ErmpViewWebConfiguration.class, EventuateLocalErmpConfiguration.class, CommonSwaggerConfiguration.class})
 @SpringBootApplication
 public class ErmpViewServiceMain {
 
