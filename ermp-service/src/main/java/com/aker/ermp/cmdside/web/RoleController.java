@@ -1,4 +1,4 @@
-package com.aker.ermp.ermpservice.web;
+package com.aker.ermp.cmdside.web;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aker.ermp.cmdside.backend.domain.RoleAggregate;
+import com.aker.ermp.cmdside.backend.domain.RoleService;
 import com.aker.ermp.common.CreateRoleRequest;
 import com.aker.ermp.common.CreateRoleResponse;
-import com.aker.ermp.ermpservice.backend.domain.RoleAggregate;
-import com.aker.ermp.ermpservice.backend.domain.RoleService;
 
 import io.eventuate.EntityWithIdAndVersion;
 

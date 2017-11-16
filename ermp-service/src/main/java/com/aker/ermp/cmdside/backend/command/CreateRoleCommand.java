@@ -1,4 +1,4 @@
-package com.aker.ermp.ermpservice.backend.command;
+package com.aker.ermp.cmdside.backend.command;
 
 public class CreateRoleCommand implements RoleCommand {
 	

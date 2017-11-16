@@ -1,4 +1,4 @@
-package com.aker.ermp.ermpservice.web;
+package com.aker.ermp.cmdside.web;
 
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-import com.aker.ermp.ermpservice.backend.ErmpBackendConfiguration;
+import com.aker.ermp.cmdside.backend.ErmpBackendConfiguration;
 
 @Configuration
 @Import(ErmpBackendConfiguration.class)

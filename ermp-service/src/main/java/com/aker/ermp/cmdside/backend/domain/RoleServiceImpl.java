@@ -1,7 +1,7 @@
-package com.aker.ermp.ermpservice.backend.domain;
+package com.aker.ermp.cmdside.backend.domain;
 
-import com.aker.ermp.ermpservice.backend.command.CreateRoleCommand;
-import com.aker.ermp.ermpservice.backend.command.RoleCommand;
+import com.aker.ermp.cmdside.backend.command.CreateRoleCommand;
+import com.aker.ermp.cmdside.backend.command.RoleCommand;
 
 import io.eventuate.EntityWithIdAndVersion;
 import io.eventuate.sync.AggregateRepository;

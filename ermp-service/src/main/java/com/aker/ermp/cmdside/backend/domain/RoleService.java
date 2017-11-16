@@ -1,4 +1,4 @@
-package com.aker.ermp.ermpservice.backend.domain;
+package com.aker.ermp.cmdside.backend.domain;
 
 import io.eventuate.EntityWithIdAndVersion;
 

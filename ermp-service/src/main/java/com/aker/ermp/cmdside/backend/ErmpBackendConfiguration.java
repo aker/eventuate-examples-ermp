@@ -1,12 +1,12 @@
-package com.aker.ermp.ermpservice.backend;
+package com.aker.ermp.cmdside.backend;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.aker.ermp.ermpservice.backend.command.RoleCommand;
-import com.aker.ermp.ermpservice.backend.domain.RoleAggregate;
-import com.aker.ermp.ermpservice.backend.domain.RoleService;
-import com.aker.ermp.ermpservice.backend.domain.RoleServiceImpl;
+import com.aker.ermp.cmdside.backend.command.RoleCommand;
+import com.aker.ermp.cmdside.backend.domain.RoleAggregate;
+import com.aker.ermp.cmdside.backend.domain.RoleService;
+import com.aker.ermp.cmdside.backend.domain.RoleServiceImpl;
 
 import io.eventuate.sync.AggregateRepository;
 import io.eventuate.sync.EventuateAggregateStore;
