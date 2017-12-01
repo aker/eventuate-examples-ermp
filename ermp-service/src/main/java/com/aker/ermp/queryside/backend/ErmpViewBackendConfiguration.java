@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.aker.ermp.RoleRepository;
+import com.aker.ermp.UserRepository;
 import com.aker.ermp.queryside.backend.domain.ErmpViewWorkflow;
 import com.aker.ermp.queryside.backend.domain.RoleViewServiceImpl;
+import com.aker.ermp.queryside.backend.domain.UserViewServiceImpl;
 
 import io.eventuate.javaclient.spring.EnableEventHandlers;
 
@@ -18,12 +20,17 @@ import io.eventuate.javaclient.spring.EnableEventHandlers;
 public class ErmpViewBackendConfiguration {
 	
 	@Bean
-	public ErmpViewWorkflow ermpViewEventSubscriber(RoleViewServiceImpl roleViewService) {
-		return new ErmpViewWorkflow(roleViewService);
+	public ErmpViewWorkflow ermpViewEventSubscriber(UserViewServiceImpl userViewService, RoleViewServiceImpl roleViewService) {
+		return new ErmpViewWorkflow(userViewService, roleViewService);
 	}
 	
 	@Bean
 	public RoleViewServiceImpl roleViewService(RoleRepository repository) {
 		return new RoleViewServiceImpl(repository);
+	}
+	
+	@Bean
+	public UserViewServiceImpl userViewService(UserRepository repository) {
+		return new UserViewServiceImpl(repository);
 	}
 }
