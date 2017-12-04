@@ -26,12 +26,17 @@ public class ErmpBackendConfiguration {
 	}
 	
 	@Bean
+	public AggregateRepository<UserAggregate, UserCommand> userAggregateRepository(EventuateAggregateStore eventStore) {
+		return new AggregateRepository<>(UserAggregate.class, eventStore);
+	}
+	
+	@Bean
 	public RoleService roleService(AggregateRepository<RoleAggregate, RoleCommand> aggregateRepository) {
 		return new RoleServiceImpl(aggregateRepository);
 	}
 	
 	@Bean
-	public UserService userService(AggregateRepository<UserAggregate, UserCommand> aggregateRepository) {
-		return new UserServiceImpl(aggregateRepository);
+	public UserService userService(AggregateRepository<UserAggregate, UserCommand> userAggregateRepository) {
+		return new UserServiceImpl(userAggregateRepository);
 	}
 }
