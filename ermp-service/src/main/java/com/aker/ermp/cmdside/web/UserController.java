@@ -11,13 +11,19 @@ import com.aker.ermp.cmdside.backend.domain.UserAggregate;
 import com.aker.ermp.cmdside.backend.domain.UserService;
 import com.aker.ermp.common.CreateUserRequest;
 import com.aker.ermp.common.CreateUserResponse;
+import com.aker.ermp.common.CreateCustomerRequest;
 
 import io.eventuate.EntityWithIdAndVersion;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
+@RequestMapping("/api")
 public class UserController {
 
 	private UserService userService;
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public UserController(UserService userService) {
 		this.userService = userService;
@@ -34,5 +40,18 @@ public class UserController {
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+
+	@RequestMapping(value = "/customers", method = RequestMethod.POST)
+	public ResponseEntity<CreateUserResponse> createCustomer(@RequestBody CreateCustomerRequest customerRequest) {
+		logger.debug("request: {}", customerRequest);
+		
+		CreateUserRequest userRequest = new CreateUserRequest();
+		userRequest.setUserCode(customerRequest.getSsn());
+		userRequest.setUserName(customerRequest.getSsn());
+		userRequest.setEmail(customerRequest.getEmail());
+		userRequest.setPassword(customerRequest.getPassword());
+
+		return createUser(userRequest);
 	}
 }
